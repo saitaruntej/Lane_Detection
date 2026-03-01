@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Results (to keep the repo light)
+results/*.avi
+results/*.mp4
+results/*.mov
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary test scripts
+code/test_new_input.py
+
+# Large gif if not needed (optional, keeping it for now if it's the official results)
+# gif/curved_lane_detection.gif

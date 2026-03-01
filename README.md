@@ -1,72 +1,67 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-# Lane Detection and Turn Prediction  
-This repository contains code to detect lanes on straight and curved roads using classical approach of computer vision to mimic Lane Departure Warning System in self-driving cars. Concepts of homography, polynomial curve fitting, hough lines, warping, and unwarping have been implemented to get the results. The program also predicts turn on curved roads by computing the radius of curvature.
+# 🚗 Lane Detection and Turn Prediction
 
-## Pipeline
+This project focuses on detecting road lanes — both straight and curved — using classical computer vision techniques. The goal is to simulate a simplified Lane Departure Warning System, similar to what is used in self-driving cars.
 
-### Straight Lane Detection
-**1. Solid Lane Detection:**
-  - Apply mask to detect region of interest(part of the image containing lane to be detected).
-  - Apply [Hough Transform](https://en.wikipedia.org/wiki/Hough_transform) with minimum length value(decided by tuning) high enough to detect only solid lane.
-  - Find the mean of all the start and end points.
-  - Find the slope mean value calculated in step 2.
-  - Draw a single line on the image with calculated slope.
-  
- **2. Dashed Lane Detection:**
-  - Apply mask to detect region of interest(part of the image containing lane to be detected).
-  - Apply Hough transform to detect all the line in the masked image.
-  - Find the slope of all the lines and remove those lines which is positive slope if solid lane has positive slope and negative slope if solid line has negative slope.
-  - Find the mean of all the start and end points in the remaining lines.
-  - Find the slope with mean value calculated in step 3.
-  - Draw a single line with calculated slope.
-  
- ### Curve Lane Detection and Turn Prediction
- **1. White Lane Detection:**
-  -  Compute the Homography and perform warp perspective to take bird eye view of the region of interest (part of the image containing lane to be detected).
-  - Thresholding to remove yellow lane and noise from the warped image. The output will be binary image containing only white lane.
-  - Find the pixel coordinates having value 255.
-  - Find the equation of curve from above pixel coordinate.
-  - Extrapolate and plot the white lane using above equation.
-  - Compute the radius of curvature using [equation of curve](https://www.cuemath.com/radius-of-curvature-formula/).
-  
- **2. Yellow Lane Detection:**
-  - convert the image into hsv color space and apply color mask to detect only yellow lane.
-  - Find the pixel coordinate of the yellow pixel.
-  - Find the equation of curve from above pixel coordinate.
-  - Extrapolate and plot the yellow lane using above equation.
-  - Compute the radius of curvature using equation of curve.
-  
- **3. Radius of Curvature:**
-  - Take the average of white and yellow lane radius.
-  
- **4. Direction of Turn:**
-  - If the coefficient of highest degree term in the equation of white/yellow lane is positive, then the turn would be right. If it is negative, then the turn would be left and if it is zero then then is a no turn.
+Instead of relying on deep learning, this solution uses mathematical concepts like homography, polynomial curve fitting, Hough Transform, perspective warping, and curvature estimation to understand lane structure and predict vehicle turns.
 
-## Requirement:
-- Python 2.0 or above
+## 🌟 Features
+- **Straight Lane Detection**: Detects solid and dashed lines on straight roads.
+- **Curve Lane Detection**: Handles curved roads using bird's-eye view transformations.
+- **Turn Prediction**: Calculates the radius of curvature and predicts the direction of the turn (Left, Right, or Straight).
+- **Video Processing**: Processes input video files and generates annotated output videos.
 
-## Dependencies:
-- OpenCV
+## 🛠 Project Structure
+- `code/`: Contains the Python scripts for lane detection.
+  - `straight_lane_detection.py`: Implementation for straight roads.
+  - `curved_lane_detection.py`: Implementation for curved roads and turn prediction.
+- `data/`: Input video files.
+  - `straight_lane.mp4`: Original straight road video.
+  - `curved_lane.mp4`: Original curved road video.
+  - `solidWhiteRight.mp4`: New sample from Udacity project.
+- `results/`: Directory where processed output videos are saved.
+- `gif/`: Contains demonstration animations.
+
+## 📋 Requirements
+- Python 3.8+
+- OpenCV (`opencv-python`)
 - NumPy
 
-## Instructions to run the code:
-Run the following command in the terminal:
-```
-python straight_lane_detection.py  
-python curved_lane_detection.py
+## 🚀 Getting Started
+
+### 1. Installation
+Clone the repository and install the dependencies:
+```bash
+pip install opencv-python numpy
 ```
 
-## Result
-![](https://github.com/abhijitmahalle/lane_detection/blob/master/gif/curved_lane_detection.gif)
+### 2. Running the Code
+To run the lane detection on straight roads:
+```bash
+python code/straight_lane_detection.py
+```
 
-## How well the solution can generalize?
+To run the lane detection on curved roads:
+```bash
+python code/curved_lane_detection.py
+```
+
+## 🔍 Implementation Pipeline
+
 ### Straight Lane Detection
-The solution will work in the image that satisfies the following scenario:
- - One line should be solid, and another should be dashed irrespective of the left or right position.
- - The shade of the color of the road should not be significantly different than the given shade.
- - Field of view and direction of view of the video should not be significantly different from the given video.
+1. **Region of Interest**: Apply a mask to focus only on the road area.
+2. **Hough Transform**: Identify line segments in the filtered image.
+3. **Line Filtering**: Distinguish between solid and dashed lanes based on slope and length.
+4. **Line Averaging**: Compute the mean slope and intercepts to draw continuous lane lines.
 
-### Curve Lane Detection and Turn Prediction
-The solution will work in the image that satisfy following scenario:
- - One line should be yellow, and another should be white irrespective of the left or right position or whether they are solid or dashed or whether they are curved or straight.
- - Field of view and direction of view of the video should not be significantly different than given video.
+### Curve Lane Detection & Turn Prediction
+1. **Perspective Wrap**: Apply Homography to get a bird's-eye view of the road.
+2. **Color Masking**: Use HSV thresholding to isolate white and yellow lane markings.
+3. **Curve Fitting**: Fit a second-order polynomial to the detected lane pixels.
+4. **Curvature Calculation**: Compute the radius of curvature from the polynomial coefficients.
+5. **Turn Prediction**: Determine turn direction based on the curve's leading coefficient.
+
+## 📊 Results
+![Curved Lane Detection](gif/curved_lane_detection.gif)
+
+## ⚖️ License
+This project is licensed under the MIT License.
