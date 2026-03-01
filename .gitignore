@@ -3,10 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Results (to keep the repo light)
-results/*.avi
-results/*.mp4
-results/*.mov
+# Large data
+data/
+gif/
+results/
+tmp/
 
 # IDEs
 .vscode/
