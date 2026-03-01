@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.db
+.sqlite3
+
+# Ignore video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Ignore OS files
+Thumbs.db
+.DS_Store
